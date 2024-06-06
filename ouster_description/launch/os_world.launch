@@ -7,7 +7,8 @@
   <arg name="debug" default="false"/>
   <arg name="verbose" default="false"/>
   <arg name="world_name" default="$(find ouster_description)/worlds/example.world"/>
-  <arg name="model" default="$(find ouster_description)/urdf/OS1-64.urdf.xacro"/>
+  <arg name="model" default="$(find ouster_description)/urdf/example.urdf.xacro"/>
+  <arg name="ouster_type" default="OS0-32"/>
 
   <!-- Start gazebo and load the world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -21,7 +22,7 @@
   </include>
 
   <!-- Spawn the example robot -->
-  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(arg model)'"/>
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(arg model)' ouster_type:='$(arg ouster_type)'"/>
   <node pkg="gazebo_ros" type="spawn_model" name="spawn_sensor" output="screen" args="-urdf -param robot_description -model example"/>
   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
     <param name="publish_frequency" type="double" value="30.0"/>

@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="os1_example">
 
+  <!-- Arg for selecting Ouster type -->
+  <xacro:arg name="ouster_type" default="OS1-64"/>
+  <xacro:property name="ouster_type" value="$(arg ouster_type)"/>
+
   <!-- Base Footprint -->
   <link name="base_footprint" />
 
@@ -30,9 +34,18 @@
     </inertial>
   </link>
 
+  <xacro:include filename="$(find ouster_description)/urdf/OS0-32.urdf.xacro"/>
   <xacro:include filename="$(find ouster_description)/urdf/OS1-64.urdf.xacro"/>
-  <OS1-64 parent="base_link" name="os1_sensor" hz="10" samples="220">
-    <origin xyz="0 0 1.2" rpy="0 0 0" />
-  </OS1-64>
 
+  <xacro:if value="${ouster_type == 'OS0-32'}">
+    <xacro:OS0-32 parent="base_link" name="os0_sensor" hz="10" samples="512">
+      <origin xyz="0 0 1.2" rpy="0 0 0" />
+    </xacro:OS0-32>
+  </xacro:if>
+
+  <xacro:if value="${ouster_type == 'OS1-64'}">
+    <xacro:OS1-64 parent="base_link" name="os1_sensor" hz="10" samples="512">
+      <origin xyz="0 0 1.2" rpy="0 0 0" />
+    </xacro:OS1-64>
+  </xacro:if>
 </robot>
