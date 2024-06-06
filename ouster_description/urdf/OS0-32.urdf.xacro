@@ -33,10 +33,11 @@
       </collision>
     </link>
 
+    <!-- The "sensor frame" is centered at the bottom of the sensor body with x pointing forward away from the plug (see Ouster user manaual (https://data.ouster.io/downloads/software-user-manual/software-user-manual-v2p0.pdf#e))-->
     <joint name="${name}_baseplate_to_body" type="fixed">
       <parent link="${name}_baseplate"/>
       <child link="${name}"/>
-      <origin xyz="0 0 0.042" rpy="0 0 0" />
+      <origin xyz="0 0 0.008" rpy="0 0 0" />
     </joint>
 
     <link name="${name}">
@@ -53,10 +54,9 @@
          </geometry>
       </collision>
       <visual name="base_visual">
-         <origin xyz="0 0 0.0" rpy="0 0 1.5707" />
+         <origin xyz="0 0 0.03618" rpy="0 0 1.5707" />
          <geometry>
 	         <mesh filename="package://ouster_description/meshes/os1_64.dae" />
-           <!-- <cylinder length="0.073" radius="0.04" /> -->
          </geometry>
       </visual>
     </link>
@@ -65,7 +65,7 @@
 
     <link name="${lidar_link}" />
 
-
+    <!-- The Ouster driver publishes these joints, however, we must define them here for Gazebo and Robot State Publisher -->
     <joint name="${name}_imu_link_joint" type="fixed">
       <parent link="${name}" />
       <child link="${imu_link}" />
@@ -74,10 +74,11 @@
     <gazebo reference="${imu_link}">
     </gazebo>
 
+    <!-- The lidar frame points backwards towards the sensor plug and is vertical centered in the lidar window -->
     <joint name="${name}_lidar_link_joint" type="fixed">
       <parent link="${name}" />
       <child link="${lidar_link}" />
-      <origin xyz="0.0 0.0 0.03618" rpy="0 0 0" />
+      <origin xyz="0 0 0.03618" rpy="0 0 ${M_PI}" />
     </joint>
 
     <!-- Gazebo requires the ouster_gazebo_plugins package -->
